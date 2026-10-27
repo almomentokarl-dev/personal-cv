@@ -51,14 +51,12 @@ Add screenshots after running the site, then link them here, for example:
 
 ## GitHub setup
 
-This project directory was not connected to a Git repository when prepared. To publish it to Karl’s GitHub account, first create a new empty repository (for example `karl-cv-website`) at [github.com/new](https://github.com/new). Then run the following from this directory, replacing the repository name if needed:
+This workspace has a Git repository with an existing `first commit` and the remote `https://github.com/almomentokarl-dev/personal-cv.git`. Confirm that this is the intended destination and inspect the changes before pushing. The existing history should be preserved. If the intended repository is different, create an empty repository at [github.com/new](https://github.com/new), then update the `origin` URL before pushing.
 
 ```bash
-git init
 git add .
 git commit -m "Build Karl Almomento CV website"
 git branch -M main
-git remote add origin https://github.com/almomentokarl-dev/karl-cv-website.git
 git push -u origin main
 ```
 
