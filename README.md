@@ -2,6 +2,9 @@
 
 A responsive personal CV and academic project portfolio for Karl Almomento, built with Next.js App Router and TypeScript. FeedSmart is featured as a collaborative academic capstone project. Individual responsibilities, skills, repositories, and project specifics are only shown when confirmed.
 
+## Vercel link
+https://personal-cv-sable.vercel.app/
+
 ## Features
 
 - Responsive editorial CV with kinetic typography, sticky navigation, mobile menu, and reading progress indicator
