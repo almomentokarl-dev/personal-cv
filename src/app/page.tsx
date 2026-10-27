@@ -1,0 +1,76 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Award, BookOpen, BriefcaseBusiness, Check, ChevronRight, Code2, Cpu, ExternalLink, Github, Globe2, Layers3, MapPin, Menu, Radio, Sparkles, X } from "lucide-react";
+import { portfolio as p } from "@/data/portfolio";
+
+const nav = [["About", "about"], ["Education", "education"], ["Skills", "skills"], ["Projects", "projects"], ["Experience", "experience"]];
+
+function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <div className={`reveal ${className}`}>{children}</div>;
+}
+
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState("home");
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [topVisible, setTopVisible] = useState(false);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll("main section[id]");
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    }), { rootMargin: "-35% 0px -55% 0px" });
+    sections.forEach((section) => observer.observe(section));
+    const reveals = document.querySelectorAll(".reveal");
+    const revealObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) { entry.target.classList.add("visible"); revealObserver.unobserve(entry.target); }
+    }), { threshold: 0.1 });
+    reveals.forEach((el) => revealObserver.observe(el));
+    const onScroll = () => setTopVisible(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { observer.disconnect(); revealObserver.disconnect(); window.removeEventListener("scroll", onScroll); };
+  }, []);
+
+  return <>
+    <header className="topbar"><a href="#home" className="brand" aria-label="Karl Almomento home"><span className="brand-mark">K<span>.</span></span><span className="brand-name">KARL ALMOMENTO<small>DEVELOPER IN PROGRESS</small></span></a>
+      <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Main navigation">{nav.map(([label, id]) => <a key={id} className={active === id ? "active" : ""} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>)}<a className="nav-contact" href="#contact" onClick={() => setMenuOpen(false)}>Let’s talk <ArrowUpRight size={15}/></a></nav>
+      <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X/> : <Menu/>}</button>
+    </header>
+
+    <main>
+      <section className="hero" id="home"><div className="hero-grid"/><div className="hero-orb orb-one"/><div className="hero-orb orb-two"/>
+        <div className="hero-inner"><div className="hero-copy"><div className="eyebrow"><span className="status-dot"/> AVAILABLE TO LEARN & BUILD</div><h1>Curious mind.<br/><span>Thoughtful code.</span></h1><p className="hero-sub">I’m <strong>Karl Almomento</strong>, an aspiring software developer and BSIT student interested in building useful digital experiences.</p>
+          <div className="hero-actions"><a href="#projects" className="button button-primary">View my projects <ArrowRight size={17}/></a><a href="#contact" className="button button-ghost">Get in touch <ArrowUpRight size={16}/></a></div>
+          <div className="hero-social"><a href={p.github} target="_blank" rel="noreferrer"><Github size={16}/> GitHub <ArrowUpRight size={13}/></a><span className="social-divider"/><a href={p.facebook} target="_blank" rel="noreferrer">Facebook <ArrowUpRight size={13}/></a></div>
+        </div><div className="hero-visual"><div className="visual-ring ring-a"/><div className="visual-ring ring-b"/><div className="avatar-card"><div className="avatar-top"><span className="mini-dot"/> KARL / PORTFOLIO <span className="avatar-index">01—25</span></div><div className="avatar-monogram">K<span>A</span></div><div className="avatar-bottom"><span>SOFTWARE<br/>DEVELOPMENT</span><span className="avatar-cross">✳</span><span>DAVAO DEL NORTE<br/>PHILIPPINES</span></div></div><div className="floating-chip chip-code"><Code2 size={16}/><span>Build with purpose</span></div><div className="floating-chip chip-iot"><Radio size={16}/><span>Curious about IoT</span></div><div className="hero-caption"><span>01 / ABOUT ME</span><span>SCROLL TO EXPLORE <ArrowDown size={13}/></span></div></div></div>
+        <div className="hero-bottom"><span><MapPin size={14}/> DAVAO DEL NORTE, PH</span><span>INFORMATION TECHNOLOGY · STUDENT</span><span>SCROLL TO DISCOVER <ArrowDown size={14}/></span></div>
+      </section>
+
+      <section className="section about-section" id="about"><div className="section-inner"><Reveal><div className="section-kicker"><span>01</span> A LITTLE ABOUT ME</div><div className="about-grid"><div><h2>Learning to make<br/>technology <em>matter.</em></h2><p className="lead">A student who likes understanding how things work—and finding ways to make them work better.</p></div><div className="about-copy"><p>{p.introduction}</p><a className="text-link" href={p.github} target="_blank" rel="noreferrer">More on GitHub <ArrowUpRight size={15}/></a></div></div></Reveal>
+        <Reveal className="info-grid"><div className="info-card"><span className="card-index">01 / PROFILE</span><BookOpen size={20}/><h3>Basic information</h3><dl><div><dt>Full name</dt><dd>{p.name}</dd></div><div><dt>Based in</dt><dd>{p.location}</dd></div><div><dt>School</dt><dd>{p.school}</dd></div><div><dt>Career interest</dt><dd>Software Development</dd></div></dl></div><div className="info-card objective-card"><span className="card-index">02 / DIRECTION</span><Sparkles size={20}/><h3>Career objective</h3><p>{p.objective}</p><span className="card-foot">CURIOUS BY NATURE <span>↗</span></span></div></Reveal>
+      </div></section>
+
+      <section className="section education-section" id="education"><div className="section-inner"><Reveal><div className="section-kicker"><span>02</span> THE FOUNDATION</div><div className="section-heading"><h2>Education<span className="period">.</span></h2><p>Where I’m building the fundamentals<br/>and learning by doing.</p></div><div className="education-card"><div className="edu-mark">DNSC<span>DAVAO DEL NORTE<br/>STATE COLLEGE</span></div><div className="edu-main"><span className="edu-status"><span className="status-dot"/> CURRENT STUDENT</span><h3>{p.school}</h3><p>{p.education.program}</p><div className="edu-tags"><span>{p.education.status}</span><span>Information Technology</span></div></div><div className="edu-side"><span>LEARNING IN<br/>DAVAO DEL NORTE</span><BookOpen size={22}/></div></div><p className="editable-note"><span>+</span> Add confirmed coursework or academic activities in <code>portfolio.ts</code>.</p></Reveal></div></section>
+
+      <section className="section skills-section" id="skills"><div className="section-inner"><Reveal><div className="section-kicker"><span>03</span> WHAT I’M EXPLORING</div><div className="section-heading"><h2>Skills<span className="period">.</span></h2><p>Tools and topics I’m studying, one<br/>project and problem at a time.</p></div>{p.skills.length ? <div className="skills-grid">{p.skills.map((group) => <div className="skill-card" key={group.category}><Code2 size={19}/><h3>{group.category}</h3><div className="skill-tags">{group.items.map((item) => <span key={item}>{item}</span>)}</div></div>)}</div> : <div className="skills-empty"><div className="skill-empty-icon"><Layers3 size={22}/></div><div><h3>Skills are a work in progress.</h3><p>Confirmed technologies and tools will appear here as they’re added.</p></div><span className="editable-label">EDITABLE IN PORTFOLIO DATA <ArrowRight size={14}/></span></div>}</Reveal></div></section>
+
+      <section className="section projects-section" id="projects"><div className="section-inner"><Reveal><div className="section-kicker"><span>04</span> SELECTED WORK</div><div className="section-heading"><h2>Projects<span className="period">.</span></h2><p>Collaborative work, real learning,<br/>and ideas taking shape.</p></div>
+        <article className="project-feature"><div className="project-art"><div className="art-grid"/><div className="project-art-top"><span><span className="status-dot"/> CAPSTONE PROJECT</span><span>TEAM PROJECT · 01</span></div><div className="device-stage"><div className="device-sensor sensor-left"><span/><span/><span/></div><div className="device-main"><div className="device-display"><span className="display-lines"/><span className="display-feed">FEED<br/><b>SMART</b></span><span className="display-led"/></div><div className="device-label">ESP32 · SMART SYSTEM</div><div className="device-pins">{Array.from({length: 9}).map((_, i) => <i key={i}/>)}</div></div><div className="phone"><div className="phone-speaker"/><div className="phone-screen"><span className="phone-greeting">Good morning</span><span className="phone-word">Feed<span>Smart</span></span><span className="phone-ring"><span>70<small>%</small></span></span><span className="phone-line"/><span className="phone-line short"/></div></div><div className="signal signal-one">⌁</div><div className="signal signal-two">⌁</div></div><div className="art-label"><Cpu size={14}/> CONNECTED IDEAS, BUILT TOGETHER</div></div>
+          <div className="project-content"><div className="project-meta"><span>ACADEMIC CAPSTONE</span><span>{p.feedSmart.status}</span></div><h3>{p.feedSmart.name}<span>.</span></h3><div className="project-subtitle">{p.feedSmart.subtitle}</div><p>{p.feedSmart.description}</p><div className="project-tags">{p.feedSmart.technologies.map((tech) => <span key={tech}>{tech}</span>)}</div><button className="button button-primary project-button" onClick={() => setDetailsOpen(true)}>View project details <ArrowRight size={16}/></button><p className="team-note"><span>ⓘ</span> Built collaboratively. Team technologies shown; Karl’s individual contribution is not specified.</p></div></article>
+        <div className="other-projects"><div><span className="other-count">02 — MORE TO COME</span><h3>Room for what’s next.</h3><p>More academic or personal projects can be added as details are ready.</p></div><span className="other-plus">+</span></div>
+      </Reveal></div></section>
+
+      <section className="github-band"><div className="github-inner"><div className="github-icon"><Github size={27}/></div><div><span className="github-eyebrow">OPEN SOURCE & LEARNING</span><h2>See what I’m building.</h2><p>Visit my GitHub profile to explore projects, code, and learning in progress.</p></div><a href={p.github} className="button button-light" target="_blank" rel="noreferrer">Visit GitHub <ArrowUpRight size={16}/></a><span className="github-watermark">GH</span></div></section>
+
+      <section className="section experience-section" id="experience"><div className="section-inner"><Reveal><div className="section-kicker"><span>05</span> HANDS-ON LEARNING</div><div className="section-heading"><h2>Experience<span className="period">.</span></h2><p>Academic teamwork and project<br/>work, presented honestly.</p></div><div className="experience-card"><div className="experience-icon"><BriefcaseBusiness size={19}/></div><div className="experience-main"><span className="experience-type">ACADEMIC PROJECT · COLLABORATIVE</span><h3>{p.experience[0].title}</h3><div className="experience-org">{p.experience[0].organization} <span>·</span> Student team</div><p>{p.experience[0].description}</p></div><ChevronRight className="experience-arrow" size={20}/></div></Reveal></div></section>
+
+      <section className="section achievements-section" id="achievements"><div className="section-inner"><Reveal className="achievements-row"><div><div className="section-kicker"><span>06</span> MILESTONES</div><h2>Achievements &<br/>certifications<span className="period">.</span></h2></div>{p.achievements.length ? <div className="achievement-list">{p.achievements.map((item) => <div key={item}><Award size={18}/>{item}</div>)}</div> : <div className="achievement-empty"><Award size={22}/><p>Achievements and certifications can be added as they are completed.</p></div>}</Reveal></div></section>
+
+      <section className="contact-section" id="contact"><div className="contact-decor decor-a"/><div className="contact-decor decor-b"/><div className="contact-inner"><Reveal><div className="section-kicker"><span>07</span> SAY HELLO</div><h2>Good things start<br/>with a <em>conversation.</em></h2><p>Interested in software development, student projects, or just want to connect? Find me here.</p><div className="contact-links"><a href={p.github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub <ArrowUpRight size={14}/></a><a href={p.facebook} target="_blank" rel="noreferrer"><Globe2 size={17}/> Facebook <ArrowUpRight size={14}/></a></div></Reveal></div><div className="contact-bottom"><span>KARL ALMOMENTO</span><span>BASED IN DAVAO DEL NORTE, PHILIPPINES</span></div></section>
+    </main>
+    <footer className="footer"><a href="#home" className="brand"><span className="brand-mark">K<span>.</span></span></a><span>© {new Date().getFullYear()} Karl Almomento</span><a href="#home">BACK TO TOP ↑</a></footer>
+    {topVisible && <button className="scroll-top" aria-label="Scroll to top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>↑</button>}
+    {detailsOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setDetailsOpen(false); }}><section className="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div className="modal-header"><div><span className="section-kicker"><span>PROJECT / 01</span></span><h2 id="modal-title">FeedSmart<span className="period">.</span></h2></div><button onClick={() => setDetailsOpen(false)} aria-label="Close project details"><X/></button></div><p className="modal-lead">{p.feedSmart.description}</p><div className="modal-details">{[["Project objectives",p.feedSmart.objectives],["System architecture",p.feedSmart.architecture],["Hardware & IoT",p.feedSmart.hardware],["Mobile application",p.feedSmart.mobile],["Database integration",p.feedSmart.database],["Challenges & learning",p.feedSmart.learning],["Karl’s individual contribution",p.feedSmart.contribution]].map(([label, value]) => <div key={label}><h3>{label}</h3><p>{value}</p></div>)}</div><div className="modal-stack"><h3>Team technologies</h3><div className="project-tags">{p.feedSmart.technologies.map((tech) => <span key={tech}>{tech}</span>)}</div><p>Technology list reflects the team’s project information and is subject to confirmation against the final implementation.</p></div><div className="modal-actions">{p.feedSmart.repository && <a className="button button-primary" href={p.feedSmart.repository} target="_blank" rel="noreferrer">Repository <ExternalLink size={15}/></a>}{p.feedSmart.demo && <a className="button button-ghost" href={p.feedSmart.demo} target="_blank" rel="noreferrer">Live demo <ExternalLink size={15}/></a>}<span className="modal-status"><Check size={14}/>{p.feedSmart.status}</span></div></section></div>}
+  </>;
+}
