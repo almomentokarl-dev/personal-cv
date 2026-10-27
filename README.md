@@ -4,7 +4,7 @@ A responsive personal CV and academic project portfolio for Karl Almomento, buil
 
 ## Features
 
-- Responsive one-page CV with sticky navigation, mobile menu, section indicators, and scroll-to-top control
+- Responsive editorial CV with kinetic typography, sticky navigation, mobile menu, and reading progress indicator
 - Profile introduction, basic information, objective, education, skills, academic experience, and achievements
 - FeedSmart capstone feature with project illustration and interactive detail panel
 - Editable portfolio content in `src/data/portfolio.ts`
@@ -30,7 +30,7 @@ Visit [http://localhost:3000](http://localhost:3000).
 
 Update `src/data/portfolio.ts`. Add only technologies Karl has personally used or studied. Replace the education, contribution, and project detail prompts with verified details. Set actual repository/demo URLs only when they are available. Skills and achievements remain hidden until populated.
 
-If Karl has a real profile photograph, place it in `public/images/` and update the hero to use it. The current KA initials avatar is intentionally not a generated portrait. Replace the FeedSmart CSS illustration with actual project screenshots when available.
+The hero uses the local photo at `src/assets/karl.jpg`. Replace it with a confirmed, preferred portrait if needed. Replace the FeedSmart CSS illustration with actual project screenshots when available.
 
 ## Development and production
 
